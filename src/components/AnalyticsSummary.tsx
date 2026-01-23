@@ -48,7 +48,7 @@ export default function AnalyticsSummary({ timers }: Props) {
             color="bg-zinc-400 dark:bg-zinc-600"
           />
           <StatMini
-            label="Count"
+            label="Tasks"
             value={timers.length.toString()}
             color="bg-zinc-900 dark:bg-zinc-100"
           />

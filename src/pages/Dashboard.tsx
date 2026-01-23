@@ -95,7 +95,7 @@ export default function Dashboard() {
                       key={t}
                       onClick={() => setType(t)}
                       className={[
-                        "flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded border transition-all",
+                        "flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded border transition-all cursor-pointer",
                         type === t
                           ? "bg-zinc-900 border-zinc-900 text-white dark:bg-zinc-100 dark:border-zinc-100 dark:text-zinc-900"
                           : "bg-transparent border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-600 hover:border-zinc-300 dark:hover:border-zinc-700",
@@ -114,7 +114,7 @@ export default function Dashboard() {
                     setName("");
                   }
                 }}
-                className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-bold px-6 py-3 rounded text-[10px] uppercase tracking-widest transition-all hover:bg-black dark:hover:bg-white active:scale-95 disabled:opacity-50"
+                className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-bold px-6 py-3 rounded text-[10px] uppercase tracking-widest transition-all hover:bg-black dark:hover:bg-white active:scale-95 disabled:opacity-50 cursor-pointer"
                 disabled={!name.trim()}
               >
                 Add Session
