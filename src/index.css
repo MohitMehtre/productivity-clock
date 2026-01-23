@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-primary: var(--bg-primary);
+  --color-brand-secondary: var(--text-primary);
+  --color-accent: var(--accent-color);
+  --color-bg-main: var(--bg-primary);
+  --color-card-bg: var(--bg-secondary);
+  --color-card-border: var(--border-primary);
+}
+
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f4f5;
+  --bg-tertiary: #fafafa;
+  --text-primary: #09090b;
+  --text-secondary: #71717a;
+  --text-tertiary: #a1a1aa;
+  --border-primary: #e4e4e7;
+  --border-secondary: #f4f4f5;
+  --accent-color: #09090b;
+
+  color-scheme: light;
+}
+
+:root.dark {
+  --bg-primary: #09090b;
+  --bg-secondary: #18181b;
+  --bg-tertiary: #111113;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-tertiary: #71717a;
+  --border-primary: #27272a;
+  --border-secondary: #18181b;
+  --accent-color: #fafafa;
+  color-scheme: dark;
+}
+
+/* Base styles that respond to the .dark class on <html> */
+html {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: transparent;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.minimal-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  transition: all 0.2s ease;
+}
+
+.minimal-card:hover {
+  border-color: var(--text-tertiary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
