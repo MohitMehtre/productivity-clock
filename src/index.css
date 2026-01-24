@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -8,6 +9,8 @@
   --color-bg-main: var(--bg-primary);
   --color-card-bg: var(--bg-secondary);
   --color-card-border: var(--border-primary);
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 :root {
@@ -20,7 +23,6 @@
   --border-primary: #e4e4e7;
   --border-secondary: #f4f4f5;
   --accent-color: #09090b;
-
   color-scheme: light;
 }
 
@@ -37,39 +39,12 @@
   color-scheme: dark;
 }
 
-/* Base styles that respond to the .dark class on <html> */
-html {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
+@layer base {
+  html {
+    @apply bg-(--bg-primary) text-(--text-primary) transition-colors duration-300;
+  }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background-color: transparent;
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    sans-serif;
-}
-
-.minimal-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  transition: all 0.2s ease;
-}
-
-.minimal-card:hover {
-  border-color: var(--text-tertiary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-}
-
-.status-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
+  body {
+    @apply m-0 min-h-screen bg-transparent font-sans;
+  }
 }
