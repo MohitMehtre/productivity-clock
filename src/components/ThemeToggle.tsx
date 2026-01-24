@@ -20,9 +20,16 @@ export default function ThemeToggle() {
     sunRef.current?.stopAnimation();
   };
 
+  const handleToggle = () => {
+    const audio = new Audio("/click.wav");
+    audio.volume = 0.5;
+    audio.play();
+    toggle();
+  };
+
   return (
     <button
-      onClick={toggle}
+      onClick={handleToggle}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onFocus={handleMouseEnter}
