@@ -14,7 +14,7 @@ export default function AnalyticsSummary({ timers }: Props) {
       : Math.round((analytics.workTime / analytics.totalTime) * 100);
 
   return (
-    <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl p-8 bg-white dark:bg-zinc-900/50 transition-colors duration-300">
+    <div className="border border-(--border-primary) rounded-xl p-8 bg-(--bg-primary) transition-colors duration-300">
       <div className="flex flex-col gap-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="flex flex-col gap-1">

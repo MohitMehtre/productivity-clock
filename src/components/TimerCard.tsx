@@ -9,10 +9,10 @@ export default function TimerCard({ timer }: { timer: Timer }) {
       className={[
         "relative flex flex-col justify-between overflow-hidden",
         "min-h-60",
-        "rounded-xl p-8 transition-all duration-200 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-lg dark:shadow-amber-50/10",
+        "rounded-xl p-8 transition-colors duration-300 border-(--border-primary) hover:border-(--text-tertiary) shadow-lg dark:shadow-amber-50/10",
         timer.running
-          ? "ring-1 ring-zinc-900 dark:ring-zinc-100 bg-white dark:bg-zinc-900"
-          : "bg-white dark:bg-zinc-900/50",
+          ? "ring-1 ring-zinc-900 dark:ring-zinc-100 bg-(--bg-primary)"
+          : "bg-(--bg-primary)/80",
       ].join(" ")}
     >
       <div className="flex items-start justify-between">

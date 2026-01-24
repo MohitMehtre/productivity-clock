@@ -99,7 +99,7 @@ export default function Dashboard() {
         </section>
 
         <section className="max-w-md">
-          <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl p-8 shadow-lg dark:bg-zinc-900/30">
+          <div className="border border-(--border-primary) rounded-xl p-8 shadow-lg bg-(--bg-primary) transition-colors duration-300">
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-6">
               Create New Session
             </h3>
