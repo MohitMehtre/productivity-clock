@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 import AnalyticsSummary from "../components/AnalyticsSummary";
 import ThemeToggle from "../components/ThemeToggle";
 import { motion, useAnimation } from "motion/react";
+import Footer from "../components/Footer";
 
 export default function Dashboard() {
   useTimer();
@@ -123,10 +124,10 @@ export default function Dashboard() {
                       key={t}
                       onClick={() => setType(t)}
                       className={[
-                        "relative flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded border transition-all cursor-pointer z-10",
+                        "relative flex-1 py-2 text-[10px] font-bold uppercase tracking-widest  transition-all cursor-pointer z-10",
                         type === t
-                          ? "border-transparent text-white dark:text-zinc-900"
-                          : "bg-transparent border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-600 hover:border-zinc-300 dark:hover:border-zinc-700",
+                          ? " text-white dark:text-zinc-900"
+                          : "bg-transparent text-zinc-400 hover:text-zinc-800 dark:text-zinc-600 dark:hover:text-zinc-200",
                       ].join(" ")}
                     >
                       {type === t && (
@@ -172,6 +173,8 @@ export default function Dashboard() {
           </div>
         </section>
       </div>
+
+      <Footer />
     </div>
   );
 }

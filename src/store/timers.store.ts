@@ -6,7 +6,7 @@ export interface Timer {
   id: string;
   name: string;
   type: TimerType;
-  elapsed: number; 
+  elapsed: number;
   running: boolean;
   lastTickTime: number | null;
 }
@@ -43,6 +43,7 @@ export const useTimerStore = create<TimerStore>((set) => ({
   startTimer: (id) =>
     set((state) => {
       const now = Date.now();
+
       return {
         timers: state.timers.map((t) => ({
           ...t,
@@ -54,45 +55,37 @@ export const useTimerStore = create<TimerStore>((set) => ({
 
   pauseTimer: (id) =>
     set((state) => {
-      const now = Date.now();
       const paused = state.timers.find((t) => t.id === id);
       if (!paused) return state;
 
+      let timers = state.timers.map((t) =>
+        t.id === id
+          ? { ...t, running: false, lastTickTime: null }
+          : t
+      );
+
       if (paused.type === "work") {
-        return {
-          timers: state.timers.map((t) => {
-          
-            if (t.id === id) {
-              const delta = t.running && t.lastTickTime ? now - t.lastTickTime : 0;
-              return { ...t, running: false, elapsed: t.elapsed + delta, lastTickTime: null };
-            }
-          
-            if (t.id === "break") {
-              return { ...t, running: true, lastTickTime: now };
-            }
-            return t;
-          }),
-        };
+        const now = Date.now();
+        timers = timers.map((t) =>
+          t.id === "break"
+            ? { ...t, running: true, lastTickTime: now }
+            : t
+        );
       }
 
-      return {
-        timers: state.timers.map((t) => {
-          if (t.id === id) {
-            const delta = t.running && t.lastTickTime ? now - t.lastTickTime : 0;
-            return { ...t, running: false, elapsed: t.elapsed + delta, lastTickTime: null };
-          }
-          return t;
-        }),
-      };
+      return { timers };
     }),
 
   tick: () =>
     set((state) => {
       const now = Date.now();
+
       return {
         timers: state.timers.map((t) => {
-          if (!t.running || !t.lastTickTime) return t;
+          if (!t.running || t.lastTickTime === null) return t;
+
           const delta = now - t.lastTickTime;
+
           return {
             ...t,
             elapsed: t.elapsed + delta,
