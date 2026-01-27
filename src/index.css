@@ -54,7 +54,6 @@
       mix-blend-mode: overlay;
     }
 
-    /* Enhanced Focal Glow */
     background-image: radial-gradient(
       circle at 50% -20%,
       color-mix(in srgb, var(--text-primary), transparent 94%),
@@ -62,7 +61,6 @@
     );
   }
 
-  /* Masked Architectural Grid */
   #root::before {
     content: "";
     @apply fixed inset-0 pointer-events-none -z-10;

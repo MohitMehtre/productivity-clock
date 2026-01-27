@@ -100,75 +100,89 @@ export default function Dashboard() {
         </section>
 
         <section className="max-w-md">
-          <div className="border border-(--border-primary) rounded-xl p-8 shadow-lg bg-(--bg-primary) transition-colors duration-300">
-            <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-6">
-              Create New Session
-            </h3>
-            <div className="flex flex-col gap-6">
-              <motion.input
-                ref={inputRef}
-                animate={controls}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Session Name"
-                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded px-4 py-3 text-xs font-medium focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 transition-all placeholder:text-zinc-300 dark:placeholder:text-zinc-700 text-zinc-900 dark:text-zinc-100 w-full"
-              />
+          <div className="relative overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/50 backdrop-blur-sm p-1">
+            <div
+              className="absolute top-0 right-0 w-2 h-2 bg-zinc-900 dark:bg-zinc-100"
+              style={{ clipPath: "polygon(100% 0, 100% 100%, 0 0)" }}
+            />
 
-              <div className="flex flex-col gap-2">
-                <label className="text-[9px] font-bold uppercase tracking-widest text-zinc-400">
-                  Session Type
-                </label>
-                <div className="flex gap-2 relative">
-                  {(["work", "break"] as const).map((t) => (
-                    <button
-                      key={t}
-                      onClick={() => setType(t)}
-                      className={[
-                        "relative flex-1 py-2 text-[10px] font-bold uppercase tracking-widest  transition-all cursor-pointer z-10",
-                        type === t
-                          ? " text-white dark:text-zinc-900"
-                          : "bg-transparent text-zinc-400 hover:text-zinc-800 dark:text-zinc-600 dark:hover:text-zinc-200",
-                      ].join(" ")}
-                    >
-                      {type === t && (
-                        <motion.div
-                          layoutId="session-pill"
-                          className="absolute inset-0 bg-zinc-900 dark:bg-zinc-100 rounded -z-10"
-                          transition={{
-                            type: "spring",
-                            bounce: 0.3,
-                            duration: 0.6,
-                          }}
-                        />
-                      )}
-                      <span className="relative z-20">
-                        {t === "work" ? "Deep Focus" : "Recovery"}
-                      </span>
-                    </button>
-                  ))}
-                </div>
+            <div className="border border-zinc-100 dark:border-zinc-900 p-8">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-1 h-3 bg-zinc-900 dark:bg-zinc-100" />
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-900 dark:text-zinc-100">
+                  Initialize Session
+                </h3>
               </div>
 
-              <button
-                onClick={() => {
-                  if (name.trim()) {
-                    addTimer(name, type);
-                    setName("");
-                  } else {
-                    inputRef.current?.focus();
-                    controls.start({
-                      x: [0, -10, 10, -10, 10, 0],
-                      transition: { duration: 0.4 },
-                    });
-                    setTimeout(() => {
-                      inputRef.current?.blur();
-                    }, 2000);
-                  }
-                }}
-                className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-bold px-6 py-3 rounded text-[10px] uppercase tracking-widest transition-all hover:bg-black dark:hover:bg-white active:scale-95 cursor-pointer"
-              >
-                Add Session
-              </button>
+              <div className="flex flex-col gap-8">
+                <div className="space-y-2">
+                  <label className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-600 ml-1">
+                    01 // Identifier
+                  </label>
+                  <motion.input
+                    ref={inputRef}
+                    animate={controls}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="ENTER_SESSION_NAME"
+                    className="bg-transparent border-b border-zinc-200 dark:border-zinc-800 rounded-none px-1 py-3 text-xs font-mono focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 transition-all placeholder:text-zinc-300 dark:placeholder:text-zinc-700 text-zinc-900 dark:text-zinc-100 w-full"
+                  />
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-600 ml-1">
+                    02 // Operational_Mode
+                  </label>
+                  <div className="flex gap-2 p-1 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-900">
+                    {(["work", "break"] as const).map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => setType(t)}
+                        className={[
+                          "relative flex-1 py-2 text-[9px] font-bold uppercase tracking-widest transition-all cursor-pointer z-10",
+                          type === t
+                            ? "text-white dark:text-zinc-900"
+                            : "text-zinc-400 hover:text-zinc-800 dark:text-zinc-600 dark:hover:text-zinc-200",
+                        ].join(" ")}
+                      >
+                        {type === t && (
+                          <motion.div
+                            layoutId="session-pill"
+                            className="absolute inset-0 bg-zinc-900 dark:bg-zinc-100"
+                            transition={{
+                              type: "spring",
+                              bounce: 0.2,
+                              duration: 0.6,
+                            }}
+                          />
+                        )}
+                        <span className="relative z-20">
+                          {t === "work" ? "Deep_Focus" : "Recovery"}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    if (name.trim()) {
+                      addTimer(name, type);
+                      setName("");
+                    } else {
+                      inputRef.current?.focus();
+                      controls.start({
+                        x: [0, -10, 10, -10, 10, 0],
+                        transition: { duration: 0.4 },
+                      });
+                    }
+                  }}
+                  className="mt-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-black px-6 py-4 text-[10px] uppercase tracking-[0.3em] transition-all hover:bg-black dark:hover:bg-white active:scale-[0.98] cursor-pointer flex items-center justify-center gap-4"
+                >
+                  Create Session
+                  <div className="w-1.5 h-1.5 bg-white/30 dark:bg-black/30 rotate-45" />
+                </button>
+              </div>
             </div>
           </div>
         </section>

@@ -8,7 +8,7 @@ export default function Footer() {
             <div className="flex items-center gap-2">
               <div className="h-1 w-4 bg-zinc-900 dark:bg-zinc-100 rounded-full" />
               <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
-                © Made With ❤️
+                ©Developed By Mohit
               </span>
             </div>
             <p className="text-zinc-500 dark:text-zinc-400 text-xs font-medium max-w-60 leading-relaxed">

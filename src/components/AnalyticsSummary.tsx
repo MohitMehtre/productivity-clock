@@ -14,96 +14,127 @@ export default function AnalyticsSummary({ timers }: Props) {
       : Math.round((analytics.workTime / analytics.totalTime) * 100);
 
   return (
-    <div className="border border-(--border-primary) rounded-xl p-8 bg-(--bg-primary) transition-colors duration-300">
-      <div className="flex flex-col gap-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-              Performance Overview
-            </h2>
-            <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-[0.2em]">
-              Data measured today
-            </p>
+    <div className="relative overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/50 backdrop-blur-sm p-1">
+      <div
+        className="absolute top-0 left-0 w-3 h-3 bg-zinc-900 dark:bg-zinc-100"
+        style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
+      />
+      <div
+        className="absolute bottom-0 right-0 w-3 h-3 bg-zinc-900 dark:bg-zinc-100"
+        style={{ clipPath: "polygon(100% 0, 100% 100%, 0 100%)" }}
+      />
+
+      <div className="border border-zinc-100 dark:border-zinc-900 p-8">
+        <div className="flex flex-col lg:flex-row gap-12">
+          <div className="flex-1 space-y-6">
+            <div className="space-y-1">
+              <div className="display flex">
+                <h2 className="text-2xl font-black tracking-tighter text-zinc-900 dark:text-zinc-100 uppercase">
+                  Productivity
+                </h2>
+                <h2 className="text-2xl font-black tracking-tighter text-zinc-900 dark:text-zinc-600 uppercase">
+                  .Log
+                </h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="h-0.5 w-4 bg-zinc-900 dark:bg-zinc-100" />
+                <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-[0.3em]">
+                  Diagnostic Overview
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <StatItem
+                label="Total Runtime"
+                value={formatTime(analytics.totalTime)}
+                sub="Cumulative delta"
+              />
+              <StatItem
+                label="Work Integrity"
+                value={`${workPercent}%`}
+                sub="Efficiency rating"
+                highlight
+              />
+            </div>
           </div>
 
-          <div className="flex items-center gap-10">
-            <Stat
-              label="Total Session"
-              value={formatTime(analytics.totalTime)}
+          <div className="lg:w-1/2 grid grid-cols-2 gap-px bg-zinc-100 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-900">
+            <StatBox
+              label="Deep Focus"
+              value={formatTime(analytics.workTime)}
+              variant="dark"
             />
-            <div className="h-4 w-px bg-zinc-400 dark:bg-zinc-700" />
-            <Stat label="Work Integrity" value={`${workPercent}%`} highlight />
+            <StatBox label="Recovery" value={formatTime(analytics.breakTime)} />
+            <StatBox
+              label="Total Nodes"
+              value={timers.length.toString().padStart(2, "0")}
+            />
+            <StatBox
+              label="Mean Cycle"
+              value={formatTime(
+                analytics.totalTime / Math.max(timers.length, 1),
+              )}
+            />
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 pt-6 border-t border-zinc-400 dark:border-zinc-700">
-          <StatMini
-            label="Productive"
-            value={formatTime(analytics.workTime)}
-            color="bg-zinc-900 dark:bg-zinc-100"
-          />
-          <StatMini
-            label="Recovery"
-            value={formatTime(analytics.breakTime)}
-            color="bg-zinc-400 dark:bg-zinc-600"
-          />
-          <StatMini
-            label="Tasks"
-            value={timers.length.toString()}
-            color="bg-zinc-900 dark:bg-zinc-100"
-          />
-          <StatMini
-            label="Avg Session"
-            value={formatTime(analytics.totalTime / Math.max(timers.length, 1))}
-            color="bg-zinc-400 dark:bg-zinc-600"
-          />
         </div>
       </div>
     </div>
   );
 }
 
-function Stat({
+function StatItem({
   label,
   value,
+  sub,
   highlight,
 }: {
   label: string;
   value: string;
+  sub: string;
   highlight?: boolean;
 }) {
   return (
-    <div className="flex flex-col items-end md:items-start gap-1">
-      <p className="text-[9px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
+    <div className="space-y-1">
+      <p className="text-[9px] font-bold text-zinc-400 dark:text-zinc-600 uppercase tracking-widest">
         {label}
       </p>
-      <p
-        className={`text-2xl font-bold tabular-nums ${highlight ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-900 dark:text-zinc-100"}`}
-      >
-        {value}
+      <div className="flex items-baseline gap-2">
+        <p
+          className={`text-4xl font-light tabular-nums tracking-tighter ${highlight ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
+        >
+          {value}
+        </p>
+      </div>
+      <p className="text-[8px] font-bold text-zinc-300 dark:text-zinc-700 uppercase italic">
+        // {sub}
       </p>
     </div>
   );
 }
 
-function StatMini({
+function StatBox({
   label,
   value,
-  color,
+  variant,
 }: {
   label: string;
   value: string;
-  color: string;
+  variant?: "dark";
 }) {
   return (
-    <div className="flex flex-col gap-1.5">
-      <div className="flex items-center gap-2">
-        <div className={`h-1.5 w-1.5 rounded-full ${color}`} />
-        <p className="text-[9px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
+    <div
+      className={`p-6 bg-white dark:bg-zinc-950 flex flex-col justify-between gap-4 ${variant === "dark" ? "ring-1 ring-inset ring-zinc-900/5 dark:ring-zinc-100/5" : ""}`}
+    >
+      <div className="flex items-start justify-between">
+        <p className="text-[8px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
           {label}
         </p>
+        <div
+          className={`w-1 h-1 rounded-full ${variant === "dark" ? "bg-zinc-900 dark:bg-zinc-100" : "bg-zinc-200 dark:bg-zinc-800"}`}
+        />
       </div>
-      <p className="text-sm font-bold tabular-nums text-zinc-900 dark:text-zinc-100">
+      <p className="text-xl font-bold tabular-nums text-zinc-900 dark:text-zinc-100 tracking-tight">
         {value}
       </p>
     </div>
