@@ -37,7 +37,7 @@ function FooterLink({ label, href }: { label: string; href: string }) {
       className="text-[10px] font-bold uppercase tracking-widest
         text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100
         underline underline-offset-4 decoration-transparent
-        hover:decoration-current transition-all"
+        hover:decoration-current transition-[text-decoration-color]"
     >
       {label}
     </a>

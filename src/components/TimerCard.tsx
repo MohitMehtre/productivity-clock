@@ -14,7 +14,7 @@ export default function TimerCard({ timer }: { timer: Timer }) {
       className={[
         "group relative flex flex-col overflow-hidden",
         "min-h-70",
-        "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/50 backdrop-blur-sm transition-all duration-500",
+        "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/50 backdrop-blur-sm transition-[border-color,box-shadow] duration-500",
         timer.running
           ? "border-zinc-900 dark:border-zinc-100 ring-1 ring-zinc-900/5 dark:ring-zinc-100/5 shadow-2xl"
           : "hover:border-zinc-400 dark:hover:border-zinc-600 shadow-sm",
@@ -113,7 +113,7 @@ export default function TimerCard({ timer }: { timer: Timer }) {
             )}
             <div
               className={[
-                "absolute inset-0 transition-all duration-300 bg-zinc-900 dark:bg-zinc-100",
+                "absolute inset-0 transition-opacity duration-300 bg-zinc-900 dark:bg-zinc-100",
                 timer.running ? "opacity-20" : "opacity-0",
               ].join(" ")}
             />

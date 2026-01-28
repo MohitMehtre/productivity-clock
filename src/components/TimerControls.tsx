@@ -13,7 +13,7 @@ export default function TimerControls({ id, running }: Props) {
     <button
       onClick={() => (running ? pauseTimer(id) : startTimer(id))}
       className={[
-        "relative flex h-10 items-center gap-3 px-4 transition-all duration-300 group/btn cursor-pointer",
+        "relative flex h-10 items-center gap-3 px-4 group/btn cursor-pointer",
         running
           ? "bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-800"
           : "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 border border-zinc-900 dark:border-zinc-100",

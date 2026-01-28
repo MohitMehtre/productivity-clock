@@ -6,6 +6,7 @@ import AnalyticsSummary from "../components/AnalyticsSummary";
 import ThemeToggle from "../components/ThemeToggle";
 import { motion, useAnimation } from "motion/react";
 import Footer from "../components/Footer";
+import { SystemTime } from "../components/SystemTime";
 
 export default function Dashboard() {
   useTimer();
@@ -19,7 +20,7 @@ export default function Dashboard() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="min-h-screen selection:bg-zinc-900 selection:text-white dark:selection:bg-zinc-100 dark:selection:text-zinc-900 transition-colors duration-300">
+    <div className="min-h-screen selection:bg-zinc-900 selection:text-white dark:selection:bg-zinc-100 dark:selection:text-zinc-900">
       <div className="max-w-6xl mx-auto px-6 py-20">
         <header className="mb-20 border-b border-zinc-300 dark:border-zinc-800 pb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="flex-1">
@@ -83,12 +84,7 @@ export default function Dashboard() {
               <span className="text-[9px] font-bold text-zinc-300 dark:text-zinc-600 uppercase tracking-widest">
                 System Time
               </span>
-              <span className="text-xs font-mono tabular-nums text-zinc-900 dark:text-zinc-100">
-                {new Date().toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
+              <SystemTime />
             </div>
           </div>
 
@@ -125,7 +121,7 @@ export default function Dashboard() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="ENTER_SESSION_NAME"
-                    className="bg-transparent border-b border-zinc-200 dark:border-zinc-800 rounded-none px-1 py-3 text-xs font-mono focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 transition-all placeholder:text-zinc-300 dark:placeholder:text-zinc-700 text-zinc-900 dark:text-zinc-100 w-full"
+                    className="bg-transparent border-b border-zinc-200 dark:border-zinc-800 rounded-none px-1 py-3 text-xs font-mono focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 transition-[border-color] placeholder:text-zinc-300 dark:placeholder:text-zinc-700 text-zinc-900 dark:text-zinc-100 w-full"
                   />
                 </div>
 
@@ -139,7 +135,7 @@ export default function Dashboard() {
                         key={t}
                         onClick={() => setType(t)}
                         className={[
-                          "relative flex-1 py-2 text-[9px] font-bold uppercase tracking-widest transition-all cursor-pointer z-10",
+                          "relative flex-1 py-2 text-[9px] font-bold uppercase tracking-widest cursor-pointer z-10",
                           type === t
                             ? "text-white dark:text-zinc-900"
                             : "text-zinc-400 hover:text-zinc-800 dark:text-zinc-600 dark:hover:text-zinc-200",
@@ -177,7 +173,7 @@ export default function Dashboard() {
                       });
                     }
                   }}
-                  className="mt-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-black px-6 py-4 text-[10px] uppercase tracking-[0.3em] transition-all hover:bg-black dark:hover:bg-white active:scale-[0.98] cursor-pointer flex items-center justify-center gap-4"
+                  className="mt-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-black px-6 py-4 text-[10px] uppercase tracking-[0.3em] transition-transform hover:bg-black dark:hover:bg-white active:scale-[0.98] cursor-pointer flex items-center justify-center gap-4"
                 >
                   Create Session
                   <div className="w-1.5 h-1.5 bg-white/30 dark:bg-black/30 rotate-45" />

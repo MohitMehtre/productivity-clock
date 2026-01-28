@@ -34,7 +34,7 @@ export default function ThemeToggle() {
       onMouseLeave={handleMouseLeave}
       onFocus={handleMouseEnter}
       onBlur={handleMouseLeave}
-      className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-800 active:scale-95 shadow-sm cursor-pointer"
+      className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 transition-transform hover:bg-zinc-50 dark:hover:bg-zinc-800 active:scale-95 shadow-sm cursor-pointer"
       aria-label="Toggle Theme"
     >
       <div className="relative w-4 h-4">

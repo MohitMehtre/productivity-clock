@@ -41,7 +41,7 @@
 
 @layer base {
   html {
-    @apply bg-(--bg-primary) text-(--text-primary) transition-colors duration-300;
+    @apply bg-(--bg-primary) text-(--text-primary);
   }
 
   body {
@@ -54,27 +54,21 @@
       mix-blend-mode: overlay;
     }
 
-    background-image: radial-gradient(
-      circle at 50% -20%,
+    background-image: radial-gradient(circle at 50% -20%,
       color-mix(in srgb, var(--text-primary), transparent 94%),
-      transparent 70%
-    );
+      transparent 70%);
   }
 
   #root::before {
     content: "";
     @apply fixed inset-0 pointer-events-none -z-10;
     background-image:
-      linear-gradient(
-        to right,
+      linear-gradient(to right,
         color-mix(in srgb, var(--text-primary), transparent 93%) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
-        to bottom,
+        transparent 1px),
+      linear-gradient(to bottom,
         color-mix(in srgb, var(--text-primary), transparent 93%) 1px,
-        transparent 1px
-      );
+        transparent 1px);
     background-size: 80px 80px;
     mask-image: radial-gradient(circle at 50% 0%, black, transparent 80%);
   }
