@@ -44,10 +44,28 @@
     @apply bg-(--bg-primary) text-(--text-primary);
   }
 
+  /* View Transitions API configuration for Circular Reveal */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-old(root) {
+    z-index: 1;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 9999;
+  }
+
+  /* Removed .dark overrides to keep new view always on top */
+
   body {
     @apply m-0 min-h-screen bg-transparent font-sans overflow-x-hidden relative;
 
-    Grainy Texture &::before {
+    /* Grainy Texture */
+    &::before {
       content: "";
       @apply fixed inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.05] z-100;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");

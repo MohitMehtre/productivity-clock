@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 export function useDarkMode() {
     const [isDark, setIsDark] = useState(() => {
@@ -10,7 +10,7 @@ export function useDarkMode() {
         return false;
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const root = window.document.documentElement;
         if (isDark) {
             root.classList.add('dark');
