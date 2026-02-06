@@ -1,10 +1,22 @@
 import type { Timer } from "../store/timers.store";
 import { computeAnalytics } from "../utils/analytics";
 import { formatTime } from "../utils/time";
+import { motion, AnimatePresence } from "motion/react";
+import { useState, useEffect } from "react";
 
 interface Props {
   timers: Timer[];
 }
+
+const TIPS = [
+  "Take a break every 25 minutes",
+  "Stay hydrated for peak focus",
+  "Clear your physical workspace",
+  "Review your goals daily",
+  "Minimize digital distractions",
+  "Stretch your legs often",
+  "Practice conscious breathing",
+];
 
 export default function AnalyticsSummary({ timers }: Props) {
   const analytics = computeAnalytics(timers);
@@ -12,6 +24,15 @@ export default function AnalyticsSummary({ timers }: Props) {
     analytics.totalTime === 0
       ? 0
       : Math.round((analytics.workTime / analytics.totalTime) * 100);
+
+  const [tipIndex, setTipIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTipIndex((i) => (i + 1) % TIPS.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="relative overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/50 backdrop-blur-sm p-1">
@@ -56,6 +77,27 @@ export default function AnalyticsSummary({ timers }: Props) {
                 sub="Efficiency rating"
                 highlight
               />
+            </div>
+
+            {/* Tips Section */}
+            <div className="pt-4 border-t border-zinc-100 dark:border-zinc-900">
+              <p className="text-[8px] font-bold text-zinc-400 dark:text-zinc-600 uppercase tracking-widest mb-2">
+                System_Encouragement
+              </p>
+              <div className="h-6 relative overflow-hidden">
+                <AnimatePresence mode="popLayout">
+                  <motion.p
+                    key={tipIndex}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.5, ease: "circOut" }}
+                    className="text-xs font-mono text-zinc-500 dark:text-zinc-400 absolute w-full"
+                  >
+                    {TIPS[tipIndex]}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
             </div>
           </div>
 
