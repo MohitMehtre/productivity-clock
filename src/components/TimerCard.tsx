@@ -1,57 +1,27 @@
 import type { Timer } from "../store/timers.store";
 import { formatTime } from "../utils/time";
 import TimerControls from "./TimerControls";
-import { motion, AnimatePresence, useMotionValue, useTransform } from "motion/react";
-import React from "react";
+import { motion, AnimatePresence } from "motion/react";
+
 
 export default function TimerCard({ timer }: { timer: Timer }) {
   const serialNumber = timer.id.slice(0, 8).toUpperCase();
 
-  /* 3D Tilt Logic */
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-100, 100], [5, -5]);
-  const rotateY = useTransform(x, [-100, 100], [-5, 5]);
-
-  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct * 200);
-    y.set(yPct * 200);
-  }
-
-  function handleMouseLeave() {
-    x.set(0);
-    y.set(0);
-  }
-
   return (
     <motion.div
-      style={{ perspective: 1000 }}
       layout
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
+      className="h-full"
     >
-      <motion.div
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+      <div
         className={[
           "group relative flex flex-col overflow-hidden h-full",
           "min-h-70",
-          "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/50 backdrop-blur-sm transition-[border-color,box-shadow] duration-500",
+          "border bg-white dark:bg-zinc-950/50 backdrop-blur-sm transition-all duration-500",
           timer.running
-            ? "border-zinc-900 dark:border-zinc-100 ring-1 ring-zinc-900/5 dark:ring-zinc-100/5 shadow-2xl"
-            : "hover:border-zinc-400 dark:hover:border-zinc-600 shadow-sm",
+            ? "border-zinc-400 dark:border-zinc-600 shadow-xl shadow-zinc-200/50 dark:shadow-zinc-900/20"
+            : "border-zinc-100 dark:border-zinc-800/60 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm",
         ].join(" ")}
       >
         <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-300 dark:border-zinc-700 m-2 z-10" />
@@ -59,7 +29,7 @@ export default function TimerCard({ timer }: { timer: Timer }) {
         <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-zinc-300 dark:border-zinc-700 m-2 z-10" />
         <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-zinc-300 dark:border-zinc-700 m-2 z-10" />
 
-        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 dark:border-zinc-900 transform-style-preserve-3d">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-50 dark:border-zinc-900/50">
           <div className="flex items-center gap-3">
             <div
               className={[
@@ -85,7 +55,7 @@ export default function TimerCard({ timer }: { timer: Timer }) {
           </div>
         </div>
 
-        <div className="flex-1 p-8 flex flex-col transform-style-preserve-3d" style={{ transform: "translateZ(20px)" }}>
+        <div className="flex-1 p-8 flex flex-col">
           <div className="mb-6">
             <h2 className="text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100 uppercase mb-1">
               {timer.name}
@@ -155,7 +125,7 @@ export default function TimerCard({ timer }: { timer: Timer }) {
           </div>
         </div>
 
-        <div className="bg-zinc-50/50 dark:bg-zinc-900/20 px-6 py-5 flex items-center justify-between transform-style-preserve-3d">
+        <div className="bg-zinc-50/50 dark:bg-zinc-900/20 px-6 py-5 flex items-center justify-between border-t border-zinc-50 dark:border-zinc-900/50">
           <div className="flex flex-col gap-0.5 text-[8px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-600">
             <span>Control_IO</span>
             <span
@@ -165,13 +135,13 @@ export default function TimerCard({ timer }: { timer: Timer }) {
             </span>
           </div>
 
-          <div style={{ transform: "translateZ(10px)" }}>
+          <div>
             <TimerControls id={timer.id} running={timer.running} />
           </div>
         </div>
 
         <div className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.07] bg-[radial-gradient(circle_at_center,transparent_0%,transparent_100%),linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-size-[20px_20px] -z-10 group-hover:opacity-[0.05] dark:group-hover:opacity-[0.1] transition-opacity" />
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
