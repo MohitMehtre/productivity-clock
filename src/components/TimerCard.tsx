@@ -18,7 +18,7 @@ export default function TimerCard({ timer }: { timer: Timer }) {
         className={[
           "group relative flex flex-col overflow-hidden h-full",
           "min-h-70",
-          "border bg-white dark:bg-zinc-950/50 backdrop-blur-sm transition-all duration-500",
+          "border bg-white dark:bg-zinc-950/50 backdrop-blur-sm",
           timer.running
             ? "border-zinc-400 dark:border-zinc-600 shadow-xl shadow-zinc-200/50 dark:shadow-zinc-900/20"
             : "border-zinc-100 dark:border-zinc-800/60 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm",

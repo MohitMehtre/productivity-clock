@@ -165,7 +165,7 @@ export default function Dashboard() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder={placeholder}
-                    className="bg-transparent border-b border-zinc-200 dark:border-zinc-800 rounded-none px-1 py-3 text-xs font-mono focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 transition-[border-color] placeholder:text-zinc-300 dark:placeholder:text-zinc-700 text-zinc-900 dark:text-zinc-100 w-full"
+                    className="bg-transparent border-b border-zinc-200 dark:border-zinc-800 rounded-none px-1 py-3 text-xs font-mono focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 text-zinc-900 dark:text-zinc-100 w-full"
                   />
                 </div>
 
