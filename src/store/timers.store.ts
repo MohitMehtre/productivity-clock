@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export type TimerType = "break" | "work";
 
@@ -13,6 +14,7 @@ export interface Timer {
 
 interface TimerStore {
   timers: Timer[];
+  lastInitDate: string;
   startTimer: (id: string) => void;
   pauseTimer: (id: string) => void;
   tick: () => void;
@@ -20,98 +22,126 @@ interface TimerStore {
   removeTimer: (id: string) => void;
 }
 
-export const useTimerStore = create<TimerStore>((set) => ({
-  timers: [
-    {
-      id: "break",
-      name: "Break",
-      type: "break",
-      elapsed: 0,
-      running: false,
-      lastTickTime: null,
-    },
-    {
-      id: "project",
-      name: "Project",
-      type: "work",
-      elapsed: 0,
-      running: true,
-      lastTickTime: Date.now(),
-    },
-  ],
+const getInitialTimers = (): Timer[] => [
+  {
+    id: "break",
+    name: "Break",
+    type: "break",
+    elapsed: 0,
+    running: false,
+    lastTickTime: null,
+  },
+  {
+    id: "project",
+    name: "Project",
+    type: "work",
+    elapsed: 0,
+    running: true,
+    lastTickTime: Date.now(),
+  },
+];
 
-  startTimer: (id) =>
-    set((state) => {
-      const now = Date.now();
+export const useTimerStore = create<TimerStore>()(
+  persist(
+    (set) => ({
+      timers: getInitialTimers(),
+      lastInitDate: new Date().toDateString(),
 
-      return {
-        timers: state.timers.map((t) => ({
-          ...t,
-          running: t.id === id,
-          lastTickTime: t.id === id ? now : null,
-        })),
-      };
-    }),
-
-  pauseTimer: (id) =>
-    set((state) => {
-      const paused = state.timers.find((t) => t.id === id);
-      if (!paused) return state;
-
-      let timers = state.timers.map((t) =>
-        t.id === id
-          ? { ...t, running: false, lastTickTime: null }
-          : t
-      );
-
-      if (paused.type === "work") {
-        const now = Date.now();
-        timers = timers.map((t) =>
-          t.id === "break"
-            ? { ...t, running: true, lastTickTime: now }
-            : t
-        );
-      }
-
-      return { timers };
-    }),
-
-  tick: () =>
-    set((state) => {
-      const now = Date.now();
-
-      return {
-        timers: state.timers.map((t) => {
-          if (!t.running || t.lastTickTime === null) return t;
-
-          const delta = now - t.lastTickTime;
+      startTimer: (id) =>
+        set((state) => {
+          const now = Date.now();
 
           return {
-            ...t,
-            elapsed: t.elapsed + delta,
-            lastTickTime: now,
+            timers: state.timers.map((t) => ({
+              ...t,
+              running: t.id === id,
+              lastTickTime: t.id === id ? now : null,
+            })),
           };
         }),
-      };
+
+      pauseTimer: (id) =>
+        set((state) => {
+          const paused = state.timers.find((t) => t.id === id);
+          if (!paused) return state;
+
+          let timers = state.timers.map((t) =>
+            t.id === id
+              ? { ...t, running: false, lastTickTime: null }
+              : t
+          );
+
+          if (paused.type === "work") {
+            const now = Date.now();
+            timers = timers.map((t) =>
+              t.id === "break"
+                ? { ...t, running: true, lastTickTime: now }
+                : t
+            );
+          }
+
+          return { timers };
+        }),
+
+      tick: () =>
+        set((state) => {
+          const now = Date.now();
+
+          return {
+            timers: state.timers.map((t) => {
+              if (!t.running || t.lastTickTime === null) return t;
+
+              const delta = now - t.lastTickTime;
+
+              return {
+                ...t,
+                elapsed: t.elapsed + delta,
+                lastTickTime: now,
+              };
+            }),
+          };
+        }),
+
+      addTimer: (name, type) =>
+        set((state) => ({
+          timers: [
+            ...state.timers,
+            {
+              id: crypto.randomUUID(),
+              name,
+              type,
+              elapsed: 0,
+              running: false,
+              lastTickTime: null,
+            },
+          ],
+        })),
+
+      removeTimer: (id) =>
+        set((state) => ({
+          timers: state.timers.filter((t) => t.id !== id),
+        })),
     }),
+    {
+      name: "timer-storage",
+      merge: (persistedState, currentState) => {
+        const state = persistedState as TimerStore | undefined;
+        const today = new Date().toDateString();
 
-  addTimer: (name, type) =>
-    set((state) => ({
-      timers: [
-        ...state.timers,
-        {
-          id: crypto.randomUUID(),
-          name,
-          type,
-          elapsed: 0,
-          running: false,
-          lastTickTime: null,
-        },
-      ],
-    })),
+        if (!state || state.lastInitDate !== today) {
+          // Reset if the date has changed or no state exists
+          return {
+            ...currentState,
+            lastInitDate: today,
+            timers: getInitialTimers(), // Reset timers to initial state
+          };
+        }
 
-  removeTimer: (id) =>
-    set((state) => ({
-      timers: state.timers.filter((t) => t.id !== id),
-    })),
-}));
+        return {
+          ...currentState,
+          ...state,
+        };
+      },
+    }
+  )
+);
