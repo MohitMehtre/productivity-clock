@@ -1,11 +1,42 @@
-import type { Timer } from "../store/timers.store";
+import { useTimerStore, type Timer } from "../store/timers.store";
 import { formatTime } from "../utils/time";
 import TimerControls from "./TimerControls";
 import { motion, AnimatePresence } from "motion/react";
-
+import { useState, useRef, useEffect } from "react";
 
 export default function TimerCard({ timer }: { timer: Timer }) {
+  const removeTimer = useTimerStore((s) => s.removeTimer);
+  const renameTimer = useTimerStore((s) => s.renameTimer);
   const serialNumber = timer.id.slice(0, 8).toUpperCase();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState(timer.name);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus();
+    }
+  }, [isEditing]);
+
+  const handleRename = () => {
+    if (editName.trim()) {
+      renameTimer(timer.id, editName.trim());
+      setIsEditing(false);
+    } else {
+      setEditName(timer.name);
+      setIsEditing(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleRename();
+    } else if (e.key === "Escape") {
+      setEditName(timer.name);
+      setIsEditing(false);
+    }
+  };
 
   return (
     <motion.div
@@ -42,6 +73,7 @@ export default function TimerCard({ timer }: { timer: Timer }) {
             <span className="text-[10px] font-bold tracking-[0.2em] text-zinc-400 dark:text-zinc-500 uppercase">
               REF-{serialNumber}
             </span>
+
           </div>
           <div
             className={[
@@ -57,9 +89,81 @@ export default function TimerCard({ timer }: { timer: Timer }) {
 
         <div className="flex-1 p-8 flex flex-col">
           <div className="mb-6">
-            <h2 className="text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100 uppercase mb-1">
-              {timer.name}
-            </h2>
+            <div className="flex items-center gap-2 mb-1 h-6">
+              {isEditing ? (
+                <input
+                  ref={inputRef}
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  onBlur={handleRename}
+                  onKeyDown={handleKeyDown}
+                  className="bg-transparent border-b border-zinc-300 dark:border-zinc-700 text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100 uppercase focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 w-full"
+                />
+              ) : (
+                <>
+                  <h2 className="text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100 uppercase">
+                    {timer.name}
+                  </h2>
+                  <div className="flex items-center gap-1">
+                    <div className="relative group/edit">
+                      <button
+                        onClick={() => setIsEditing(true)}
+                        className="opacity-0 group-hover:opacity-100 group-hover/edit:opacity-100 transition-opacity text-zinc-300 hover:text-zinc-600 dark:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer p-1"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                        </svg>
+                      </button>
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max pointer-events-none opacity-0 group-hover/edit:opacity-100 transition-opacity duration-200">
+                        <div className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[8px] font-bold uppercase tracking-widest px-2 py-1 relative">
+                          Rename_Session
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-t-[3px] border-t-zinc-900 dark:border-t-zinc-100" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="relative group/delete">
+                      <button
+                        onClick={() => removeTimer(timer.id)}
+                        className="opacity-0 group-hover:opacity-100 group-hover/delete:opacity-100 transition-opacity text-zinc-400 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400 cursor-pointer p-1.5 flex items-center justify-center"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M3 6h18" />
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                        </svg>
+                      </button>
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max pointer-events-none opacity-0 group-hover/delete:opacity-100 transition-opacity duration-200">
+                        <div className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[8px] font-bold uppercase tracking-widest px-2 py-1 relative">
+                          Delete_Session
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-t-[3px] border-t-zinc-900 dark:border-t-zinc-100" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
             <div className="flex items-center gap-2">
               <span className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">
                 Type:
@@ -135,7 +239,7 @@ export default function TimerCard({ timer }: { timer: Timer }) {
             </span>
           </div>
 
-          <div>
+          <div className="flex items-center gap-2">
             <TimerControls id={timer.id} running={timer.running} />
           </div>
         </div>

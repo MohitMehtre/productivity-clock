@@ -20,6 +20,7 @@ interface TimerStore {
   tick: () => void;
   addTimer: (name: string, type: TimerType) => void;
   removeTimer: (id: string) => void;
+  renameTimer: (id: string, newName: string) => void;
 }
 
 const getInitialTimers = (): Timer[] => [
@@ -120,6 +121,13 @@ export const useTimerStore = create<TimerStore>()(
       removeTimer: (id) =>
         set((state) => ({
           timers: state.timers.filter((t) => t.id !== id),
+        })),
+
+      renameTimer: (id, newName) =>
+        set((state) => ({
+          timers: state.timers.map((t) =>
+            t.id === id ? { ...t, name: newName } : t
+          ),
         })),
     }),
     {
