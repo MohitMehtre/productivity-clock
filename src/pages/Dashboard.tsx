@@ -111,9 +111,15 @@ export default function Dashboard() {
           <ThemeToggle />
         </header>
 
-        <section className="mb-24">
+        <motion.section
+          className="mb-24"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <AnalyticsSummary timers={timers} />
-        </section>
+        </motion.section>
 
         <section className="mb-24">
           <div className="flex items-end justify-between mb-12">
@@ -132,14 +138,28 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={{
+              visible: { transition: { staggerChildren: 0.08 } },
+            }}
+          >
             {timers.map((t) => (
               <TimerCard key={t.id} timer={t} />
             ))}
-          </div>
+          </motion.div>
         </section>
 
-        <section className="max-w-md">
+        <motion.section
+          className="max-w-md"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className="relative overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/50 backdrop-blur-sm p-1">
             <div
               className="absolute top-0 right-0 w-2 h-2 bg-zinc-900 dark:bg-zinc-100"
@@ -225,7 +245,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
       </div>
 
       <Footer />

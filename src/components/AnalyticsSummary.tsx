@@ -165,7 +165,9 @@ function StatBox({
   variant?: "dark";
 }) {
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -2 }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
       className={`p-6 bg-white dark:bg-zinc-950 flex flex-col justify-between gap-4 ${variant === "dark" ? "ring-1 ring-inset ring-zinc-900/5 dark:ring-zinc-100/5" : ""}`}
     >
       <div className="flex items-start justify-between">
@@ -176,9 +178,20 @@ function StatBox({
           className={`w-1 h-1 rounded-full ${variant === "dark" ? "bg-zinc-900 dark:bg-zinc-100" : "bg-zinc-200 dark:bg-zinc-800"}`}
         />
       </div>
-      <p className="text-xl font-bold tabular-nums text-zinc-900 dark:text-zinc-100 tracking-tight">
-        {value}
-      </p>
-    </div>
+      <div className="relative h-6 overflow-hidden">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.p
+            key={value}
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "-100%", opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0 text-xl font-bold tabular-nums text-zinc-900 dark:text-zinc-100 tracking-tight"
+          >
+            {value}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+    </motion.div>
   );
 }
