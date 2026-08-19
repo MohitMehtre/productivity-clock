@@ -49,7 +49,7 @@ export default function AnalyticsSummary({ timers }: Props) {
         <div className="flex flex-col lg:flex-row gap-12">
           <div className="flex-1 space-y-6">
             <div className="space-y-1">
-              <div className="display flex">
+              <div className="flex">
                 <h2 className="text-2xl font-black tracking-tighter text-zinc-900 dark:text-zinc-100 uppercase">
                   Productivity
                 </h2>

@@ -23,7 +23,9 @@ export default function ThemeToggle() {
   const handleToggle = () => {
     const audio = new Audio("/click.wav");
     audio.volume = 0.5;
-    audio.play();
+    audio.play().catch(() => {
+      /* Ignore autoplay/interaction restrictions */
+    });
     toggle();
   };
 

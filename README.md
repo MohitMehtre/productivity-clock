@@ -35,7 +35,7 @@ The app uses multiple clocks (timers):
 
 - Only **one timer** can run at a time
 - Pausing a **work timer** automatically starts **Break**
-- Pausing **Break** requires starting another work timer
+- Pausing **Break** simply stops it (no timer runs until you start one)
 - Time is tracked continuously and centrally
 - Analytics are derived from real timer data
 
@@ -49,6 +49,7 @@ These rules are enforced in the **state layer**, not the UI.
 - **React + TypeScript** – UI and logic
 - **Zustand** – global state management
 - **Tailwind CSS** – clean, utility-first styling
+- **Vitest** – unit tests for pure logic and store actions
 
 No backend, no database, no authentication — this is a **focused frontend system**.
 
@@ -136,8 +137,27 @@ npm run dev
 ### 3. Open in browser
 
 ```
-https://localhost:5173
+http://localhost:5173
 ```
+
+---
+
+## 🧪 Testing
+
+Unit tests are written with **Vitest** and cover the pure logic and the store's rule layer (time formatting, analytics, and all timer actions).
+
+```bash
+# Run the test suite once
+npm test
+
+# Run in watch mode while developing
+npm run test:watch
+
+# Run with a coverage report
+npm run test:coverage
+```
+
+Test files live next to the code they cover, as `*.test.ts` files (e.g. `src/utils/analytics.test.ts`, `src/store/timers.store.test.ts`).
 
 ---
 
